@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: indexer-bind-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: 'nginx'
+  rules:
+    - host: ${INDEXER_BIND_HOSTNAME}
+      http:
+        paths:
+          - backend:
+              service:
+                name: indexer-bind
+                port:
+                  number: ${INDEXER_BIND_PORT}
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - ${INDEXER_BIND_HOSTNAME}
+      secretName: web5

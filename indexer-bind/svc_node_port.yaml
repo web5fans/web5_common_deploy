@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: indexer-bind-node-port
+  labels:
+    app.kubernetes.io/instance: indexer-bind
+    app.kubernetes.io/name: indexer-bind
+spec:
+  type: NodePort
+  ports:
+    - name: indexer-bind
+      port: ${INDEXER_BIND_PORT}
+      protocol: TCP
+      nodePort: ${INDEXER_BIND_PORT}
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      nodePort: ${INDEXER_BIND_DB_NODE_PORT}
+  selector:
+    app.kubernetes.io/instance: indexer-bind
+    app.kubernetes.io/name: indexer-bind
